@@ -28,3 +28,9 @@ employing logic-based reasoning to flag anomalies without manual reconfiguration
      ```
    - Outputs: `models/baseline_model.pkl`, logs precision/recall/F1-score.
    
+3. **Run ReAct Agent**:
+   - Process transactions, generate reasoning, and log decisions:
+   - ```bash
+     python src/react_agent.py
+     ```
+   - Outputs: `logs/decisions.log` , `logs/decision_log.csv`
