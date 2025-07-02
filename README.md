@@ -19,3 +19,12 @@ employing logic-based reasoning to flag anomalies without manual reconfiguration
      python src/preprocess.py
      ```
    - Outputs: `data/processed/train.csv`, `data/processed/test.csv`
+   
+
+2. **Train Baseline Model**:
+   - Train Isolation Forest on normal transactions and evaluate:
+     ```bash
+     python src/model.py
+     ```
+   - Outputs: `models/baseline_model.pkl`, logs precision/recall/F1-score.
+   
