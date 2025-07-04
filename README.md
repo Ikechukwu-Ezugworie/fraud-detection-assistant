@@ -10,3 +10,27 @@ employing logic-based reasoning to flag anomalies without manual reconfiguration
 2. Create virtual environment: `python -m venv venv && source venv/bin/activate`
 3. Install dependencies: `pip install -r requirements.txt`
 4. Download Kaggle dataset from [Kaggle Credit Card Fraud Detection Dataset](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) to `data/raw/creditcard.csv`.
+
+
+## Usage
+1. **Preprocess Data**:
+   - Normalize `Amount` and `Time`, split into train/test sets:
+     ```bash
+     python src/preprocess.py
+     ```
+   - Outputs: `data/processed/train.csv`, `data/processed/test.csv`
+   
+
+2. **Train Baseline Model**:
+   - Train Isolation Forest on normal transactions and evaluate:
+     ```bash
+     python src/model.py
+     ```
+   - Outputs: `models/baseline_model.pkl`, logs precision/recall/F1-score.
+   
+3. **Run ReAct Agent**:
+   - Process transactions, generate reasoning, and log decisions:
+   - ```bash
+     python src/react_agent.py
+     ```
+   - Outputs: `logs/decisions.log` , `logs/decision_log.csv`
