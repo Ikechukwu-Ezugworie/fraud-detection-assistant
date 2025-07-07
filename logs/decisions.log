@@ -1,0 +1,154 @@
+2025-07-03 01:57:41,914 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001615
+2025-07-03 01:57:41,926 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001534
+2025-07-03 01:57:41,936 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001458
+2025-07-03 01:57:41,947 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001385
+2025-07-03 01:57:41,957 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001315
+2025-07-03 01:57:41,967 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001250
+2025-07-03 01:57:41,976 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001187
+2025-07-03 01:57:41,986 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001128
+2025-07-03 01:57:41,996 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001071
+2025-07-03 01:57:42,006 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001018
+2025-07-03 01:57:42,015 - Action: Approve, Reasoning: ['Amount (4.46) is 4.47 std devs from mean (-0.00).', 'Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,025 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,033 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,041 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,049 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,057 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,065 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,073 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,082 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,093 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,104 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,113 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,123 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,133 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,142 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,152 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,161 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,170 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,178 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,187 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,195 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,203 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,211 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,219 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,228 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,236 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,244 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,252 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,260 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,267 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,277 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,286 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,297 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,306 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,317 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,326 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,336 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,347 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,356 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,366 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,376 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,385 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,393 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,402 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,410 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,418 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,426 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,434 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,441 - Action: Approve, Reasoning: ['Amount (4.90) is 4.91 std devs from mean (-0.00).', 'Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,450 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,458 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,467 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,475 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,483 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,491 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,499 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,507 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,515 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,523 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,531 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,539 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,547 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,556 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,564 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,572 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,580 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,588 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,597 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,605 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,613 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,621 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,628 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,636 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,645 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,653 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,661 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,669 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,677 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,685 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,693 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,701 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,709 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,718 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,725 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,734 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,742 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,750 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,758 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,766 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-03 01:57:42,775 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001000
+2025-07-04 22:16:07,827 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001615
+2025-07-04 22:16:07,841 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001534
+2025-07-04 22:16:07,853 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001458
+2025-07-04 22:16:07,864 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001385
+2025-07-04 22:16:07,875 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001315
+2025-07-04 22:16:07,887 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001250
+2025-07-04 22:16:07,897 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001187
+2025-07-04 22:16:07,908 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001128
+2025-07-04 22:16:07,920 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001071
+2025-07-04 22:16:07,931 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001018
+2025-07-04 22:22:49,623 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001615
+2025-07-04 22:22:49,655 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001534
+2025-07-04 22:22:49,681 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001458
+2025-07-04 22:22:49,746 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001385
+2025-07-04 22:22:49,780 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001315
+2025-07-04 22:22:49,804 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001250
+2025-07-04 22:22:49,825 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001187
+2025-07-04 22:22:49,847 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001128
+2025-07-04 22:22:49,870 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001071
+2025-07-04 22:22:49,891 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001018
+2025-07-04 22:24:05,562 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001615
+2025-07-04 22:24:05,571 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001534
+2025-07-04 22:24:05,582 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001458
+2025-07-04 22:24:05,592 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001385
+2025-07-04 22:24:05,602 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001315
+2025-07-04 22:24:05,613 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001250
+2025-07-04 22:24:05,625 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001187
+2025-07-04 22:24:05,635 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001128
+2025-07-04 22:24:05,646 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001071
+2025-07-04 22:24:05,657 - Action: Approve, Reasoning: ['Error generating reasoning.'], Threshold: 0.001018
+2025-07-04 22:42:05,068 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001615
+2025-07-07 11:12:40,742 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001615
+2025-07-07 11:12:40,756 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001534
+2025-07-07 11:12:40,769 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001458
+2025-07-07 11:12:40,781 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001385
+2025-07-07 11:12:40,794 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001315
+2025-07-07 11:16:44,363 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001615
+2025-07-07 11:16:44,375 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001534
+2025-07-07 11:16:44,386 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001458
+2025-07-07 11:16:44,398 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001385
+2025-07-07 11:16:44,410 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001315
+2025-07-07 11:24:53,638 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001615
+2025-07-07 11:25:01,463 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001534
+2025-07-07 11:36:56,191 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001615
+2025-07-07 11:37:03,774 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001534
+2025-07-07 11:37:11,373 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001458
+2025-07-07 11:37:18,946 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001385
+2025-07-07 11:43:21,611 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001615
+2025-07-07 11:56:42,165 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001615
+2025-07-07 11:56:42,176 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001534
+2025-07-07 11:56:42,188 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001458
+2025-07-07 11:56:42,199 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001385
+2025-07-07 11:56:42,211 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001315
+2025-07-07 13:54:53,480 - Action: Approve, Reasoning: ['Isolation Forest classified transaction as normal.'], Threshold: 0.001615
