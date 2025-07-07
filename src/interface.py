@@ -8,6 +8,7 @@ import numpy as np
 from datetime import datetime
 import logging
 
+
 # Add project root to sys.path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:
@@ -25,7 +26,7 @@ if st.__version__ < "1.38.0":
     logger.warning(f"Streamlit version {st.__version__} detected, expected >=1.38.0")
 
 # Page configuration (no sidebar)
-st.set_page_config(page_title="Fraud Detection Assistant", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Fraud Detection Assistant Agent", layout="wide", initial_sidebar_state="collapsed")
 
 # Add left and right margins
 st.markdown(
@@ -99,7 +100,7 @@ def threshold_to_confidence(threshold):
 
 # Main app
 def main():
-    st.title("🛡️ Fraud Detection Assistant")
+    st.title("🛡️ Fraud Detection Assistant Agent")
     st.markdown("Detect credit card fraud with AI-powered reasoning and interactive visualizations.")
 
     # Initialize agent
@@ -136,7 +137,7 @@ def main():
                 }
                 </style>
                 <div class="tour-modal">
-                    <h3>Welcome to the Fraud Detection Assistant!</h3>
+                    <h3>Welcome to the Fraud Detection Assistant Agent!</h3>
                     <p>This dashboard helps you detect credit card fraud with AI. Here's a quick tour:</p>
                     <ul>
                         <li><b>Overview</b>: See fraud rates and recent decisions.</li>
@@ -149,7 +150,9 @@ def main():
                 """,
                 unsafe_allow_html=True
             )
-            if st.button("Got it!", use_container_width=True):
+            st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
+
+            if st.button("Got it!", use_container_width=False):
                 st.session_state['tour_seen'] = True
                 try:
                     st.rerun()
@@ -212,6 +215,7 @@ def main():
 
         decision_log, total_rows = load_decision_log(page, page_size, filter_flagged)
         if not decision_log.empty:
+            # Decision log table
             st.subheader("Decision Log")
             decision_log['features'] = decision_log['transaction'].apply(parse_transaction_features)
             st.dataframe(
@@ -234,76 +238,119 @@ def main():
             # Download button
             csv = decision_log.to_csv(index=False)
             st.download_button(
-                label="Download Current Page",
+                label="Download Current Page of CSV",
                 data=csv,
                 file_name=f"decision_log_page_{page}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
                 mime="text/csv",
-                use_container_width=True
+                use_container_width=False
             )
+            st.markdown("---")
 
-            # Pie chart
-            st.subheader("Decision Distribution")
-            decision_counts = decision_log['decision'].value_counts(normalize=True) * 100
-            fig_pie = px.pie(
-                values=decision_counts.values,
-                names=decision_counts.index,
-                title="Flagged vs. Approved Transactions",
-                color_discrete_map={"Flag": "red", "Approve": "green"},
-                hover_data={"value": decision_counts.values}
-            )
-            fig_pie.update_traces(textinfo="percent+label", hovertemplate="%{label}: %{value:.2f}%",
-                                  pull=[0.1 if x == "Flag" else 0 for x in decision_counts.index])
-            fig_pie.update_layout(height=400, margin=dict(t=50, b=50, l=20, r=20))
-            st.plotly_chart(fig_pie, use_container_width=True)
+            # Create 3 columns: chart | separator | chart
+            col1, col_sep, col2 = st.columns([5, 0.2, 5])  # Separator takes minimal space
 
-            # Scatter plot
-            st.subheader("Transaction Patterns")
-            fig_scatter = px.scatter(
-                decision_log,
-                x="timestamp",
-                y=decision_log['transaction'].apply(lambda x: eval(x)['Amount'] if isinstance(x, str) else x['Amount']),
-                color="decision",
-                color_discrete_map={"Flag": "red", "Approve": "green"},
-                title="Transaction Amount Over Time",
-                labels={"y": "Amount", "x": "Timestamp"},
-                hover_data=["reasoning", "threshold"]
-            )
-            fig_scatter.update_traces(marker=dict(size=10), selector=dict(mode='markers'))
-            fig_scatter.update_layout(height=400, margin=dict(t=50, b=50, l=20, r=20))
-            st.plotly_chart(fig_scatter, use_container_width=True)
+            # Column 1: Pie Chart
+            with col1:
+                st.markdown("### Decision Distribution")
+                decision_counts = decision_log['decision'].value_counts(normalize=True) * 100
+                df = pd.DataFrame({
+                    "Decision": decision_counts.index,
+                    "Count": decision_counts.values
+                })
+
+                fig_pie = px.pie(
+                    data_frame=df,
+                    names="Decision",
+                    values="Count",
+                    color="Decision",
+                    hover_data=["Count"],
+                    title="Flagged vs. Approved Transactions",
+                    color_discrete_map={"Flag": "red", "Approve": "green"}
+                )
+
+                fig_pie.update_traces(
+                    textinfo="percent+label",
+                    hovertemplate="%{label}: %{value:.2f}%",
+                    pull=[0.1 if x == "Flag" else 0 for x in decision_counts.index]
+                )
+                fig_pie.update_layout(height=400, margin=dict(t=50, b=50, l=20, r=20))
+                st.plotly_chart(fig_pie, use_container_width=True)
+
+            # Column separator: vertical line using HTML
+            with col_sep:
+                st.markdown(
+                    """
+                    <div style="
+                        width: 1px;
+                        height: 400px;
+                        background-color: #BBB;
+                        margin-left: auto;
+                        margin-right: auto;
+                    "></div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+            # Column 2: Scatter Plot
+            with col2:
+                st.markdown("### Transaction Patterns")
+                fig_scatter = px.scatter(
+                    decision_log,
+                    x="timestamp",
+                    y=decision_log['transaction'].apply(
+                        lambda x: eval(x)['Amount'] if isinstance(x, str) else x['Amount']),
+                    color="decision",
+                    color_discrete_map={"Flag": "red", "Approve": "green"},
+                    title="Transaction Amount Over Time",
+                    labels={"y": "Amount", "x": "Timestamp"},
+                    hover_data=["reasoning", "threshold"]
+                )
+                fig_scatter.update_traces(marker=dict(size=10), selector=dict(mode='markers'))
+                fig_scatter.update_layout(height=400, margin=dict(t=50, b=50, l=20, r=20))
+                st.plotly_chart(fig_scatter, use_container_width=True)
+
+            st.markdown("---")
 
             # Optimized heatmap
             st.subheader("Feature Correlations in Flagged Transactions")
             flagged = decision_log[decision_log['decision'] == 'Flag']
             if not flagged.empty:
                 features = pd.DataFrame([eval(x) if isinstance(x, str) else x for x in flagged['transaction']])
-                corr = features[['Time', 'Amount', 'V1', 'V10', 'V14']].corr()
+                selected_cols = ['Time', 'Amount', 'V1', 'V10', 'V14']
+                corr = features[selected_cols].corr().round(2)
+
+                annotations = []
+                for i in range(len(corr)):
+                    for j in range(len(corr.columns)):
+                        annotations.append(
+                            dict(
+                                x=corr.columns[j],
+                                y=corr.index[i],
+                                text=str(corr.iloc[i, j]),
+                                showarrow=False,
+                                font=dict(color="white" if abs(corr.iloc[i, j]) > 0.5 else "black")
+                            )
+                        )
+
                 fig_heatmap = go.Figure(data=go.Heatmap(
                     z=corr.values,
                     x=corr.columns,
-                    y=corr.columns,
-                    colorscale='Viridis',
-                    showscale=True,
+                    y=corr.index,
+                    colorscale='Viridis',  # Plotly default
+                    colorbar=dict(title="Correlation"),
                     hovertemplate="%{x} vs %{y}: %{z:.2f}"
                 ))
-                fig_heatmap.update_layout(title="Correlation Heatmap for Flagged Transactions", height=400,
-                                          margin=dict(t=50, b=50, l=20, r=20))
-                st.plotly_chart(fig_heatmap, use_container_width=True)
-            else:
-                st.warning("No flagged transactions for correlation analysis.")
 
-            # Case study widget
-            st.subheader("Fraud Case Study")
-            if not flagged.empty:
-                case = flagged.iloc[0]
-                features = parse_transaction_features(case['transaction'])
-                st.markdown(f"**Example Flagged Transaction** (Timestamp: {case['timestamp']})")
-                st.markdown(f"- **Decision**: {case['decision']}")
-                st.markdown(f"- **Reasoning**: {case['reasoning'].strip('[]')}")
-                st.markdown(
-                    f"- **Key Features**: Amount: {features['Amount']}, V10: {features['V10']}, V14: {features['V14']}")
-                st.markdown(
-                    "**Narrative**: This transaction was flagged due to an unusually high amount and extreme PCA feature values, indicating potential fraud such as unauthorized large purchases.")
+                fig_heatmap.update_layout(
+                    title="Correlation Heatmap for Flagged Transactions",
+                    height=500,
+                    annotations=annotations,
+                    xaxis=dict(tickangle=-45),
+                    margin=dict(t=60, b=60, l=40, r=40),
+                    font=dict(size=12)
+                )
+
+                st.plotly_chart(fig_heatmap, use_container_width=True)
             else:
                 st.info("No flagged transactions available for case study.")
 
