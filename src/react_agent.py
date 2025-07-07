@@ -4,6 +4,9 @@ import joblib
 import os
 import logging
 from datetime import datetime
+import time
+from huggingface_hub import InferenceClient
+import huggingface_hub
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -20,11 +23,14 @@ decision_logger.setLevel(logging.INFO)
 
 
 class ReActAgent:
-    def __init__(self, model_path='models/baseline_model.pkl', train_path='data/processed/train.csv'):
-        """Initialize ReAct agent with trained model and historical data."""
+    def __init__(self, model_path='models/baseline_model.pkl', train_path='data/processed/train.csv', hf_token=None):
+        """Initialize ReAct agent with trained model, historical data, and Qwen 2.5 7B Inference API."""
+        # Log script version and environment
+        logger.info(f"Script version: 2025-07-07 v2, huggingface_hub version: {huggingface_hub.__version__}")
+
         try:
             self.model = joblib.load(model_path)
-            logger.info(f"Loaded model from {model_path}")
+            logger.info(f"Loaded Isolation Forest model from {model_path}")
         except FileNotFoundError:
             logger.error(f"Error: Model file {model_path} not found. Run model.py first.")
             exit(1)
@@ -32,16 +38,28 @@ class ReActAgent:
         try:
             self.train_df = pd.read_csv(train_path)
             logger.info(f"Loaded training data from {train_path} for historical context.")
-            # Compute historical statistics for reasoning
             self.amount_mean = self.train_df['Amount'].mean()
             self.amount_std = self.train_df['Amount'].std()
             self.time_mean = self.train_df['Time'].mean()
             self.time_std = self.train_df['Time'].std()
-            # Store feature names for consistency
             self.feature_names = [col for col in self.train_df.columns if col != 'Class']
         except FileNotFoundError:
             logger.error(f"Error: Training data {train_path} not found. Run preprocess.py first.")
             exit(1)
+
+        # Initialize Inference API client for Qwen 2.5 7B
+        try:
+            # self.client = InferenceClient(model="Qwen/Qwen2.5-7B-Instruct", token=hf_token)
+            self.client = InferenceClient(
+                model="Qwen/Qwen2.5-VL-7B-Instruct",  # confirmed inference-enabled
+                token=hf_token,
+                provider="hf-inference"
+            )
+            logger.info("Initialized Inference API client for Qwen 2.5 7B.")
+        except Exception as e:
+            logger.warning(
+                f"Failed to initialize Inference API client: {str(e)}. Falling back to rule-based reasoning.")
+            self.client = None
 
         self.threshold = 0.0017  # Initial threshold based on dataset fraud ratio
         self.decision_log = []
@@ -49,11 +67,9 @@ class ReActAgent:
     def observe(self, transaction):
         """Observe transaction context and return features with column names."""
         try:
-            # Ensure transaction is a DataFrame with correct feature names
             if isinstance(transaction, pd.Series):
                 transaction = transaction.to_frame().T
             features = transaction.drop(labels=['Class'] if 'Class' in transaction.columns else [], axis=1)
-            # Verify feature names match training data
             if list(features.columns) != self.feature_names:
                 logger.error(f"Feature mismatch: Expected {self.feature_names}, got {list(features.columns)}")
                 return None
@@ -63,31 +79,48 @@ class ReActAgent:
             return None
 
     def reason(self, features, anomaly_score):
-        """Generate reasoning chain based on transaction features and historical patterns."""
-        reasoning = []
+        """Generate reasoning chain using Qwen 2.5 7B Inference API or rule-based fallback."""
         try:
             amount = features['Amount'].iloc[0]
-            time = features['Time'].iloc[0]
+            txn_time = features['Time'].iloc[0]  # Avoid shadowing 'time' module
 
-            # Rule 1: Check if Amount deviates significantly from historical mean
+            if self.client:
+                # Prepare prompt for Qwen 2.5
+                prompt = (
+                    f"A credit card transaction has normalized Amount={amount:.2f} "
+                    f"(historical mean={self.amount_mean:.2f}, std={self.amount_std:.2f}) and "
+                    f"Time={txn_time:.2f} (historical mean={self.time_mean:.2f}, std={self.time_std:.2f}). "
+                    f"The Isolation Forest model predicts: {'anomaly' if anomaly_score == -1 else 'normal'}. "
+                    f"Provide a concise reasoning chain (1-2 sentences) to determine if this transaction is likely fraudulent."
+                )
+                # Retry logic for API rate limits
+                for attempt in range(3):
+                    try:
+                        response = self.client.text_generation(prompt, max_new_tokens=100, temperature=0.7)
+                        reasoning = [response.strip()]
+                        if not reasoning[0]:
+                            raise ValueError("Empty response from API")
+                        return reasoning
+                    except Exception as api_error:
+                        logger.warning(f"API attempt {attempt + 1} failed: {str(api_error)}")
+                        time.sleep(2 ** attempt)  # Exponential backoff
+                logger.error("All API attempts failed. Falling back to rule-based reasoning.")
+            # Rule-based reasoning fallback
+            reasoning = []
             amount_z_score = (amount - self.amount_mean) / self.amount_std
             if abs(amount_z_score) > 3:
                 reasoning.append(
                     f"Amount ({amount:.2f}) is {abs(amount_z_score):.2f} std devs from mean ({self.amount_mean:.2f}).")
-
-            # Rule 2: Check if Time deviates significantly
-            time_z_score = (time - self.time_mean) / self.time_std
+            time_z_score = (txn_time - self.time_mean) / self.time_std
             if abs(time_z_score) > 3:
                 reasoning.append(
-                    f"Time ({time:.2f}) is {abs(time_z_score):.2f} std devs from mean ({self.time_mean:.2f}).")
-
-            # Rule 3: Check model anomaly score
+                    f"Time ({txn_time:.2f}) is {abs(time_z_score):.2f} std devs from mean ({self.time_mean:.2f}).")
             if anomaly_score == -1:
                 reasoning.append("Isolation Forest flagged transaction as anomalous.")
             else:
                 reasoning.append("Isolation Forest classified transaction as normal.")
-
-            return reasoning if reasoning else ["No significant anomalies detected."]
+            reasoning = reasoning if reasoning else ["No significant anomalies detected."]
+            return reasoning
         except Exception as e:
             logger.error(f"Error in reasoning: {str(e)}")
             return ["Error generating reasoning."]
@@ -95,16 +128,12 @@ class ReActAgent:
     def decide(self, anomaly_score, reasoning):
         """Make decision (Flag/Approve) with adaptive thresholding."""
         try:
-            # Decision: Flag if model predicts anomaly (-1)
             decision = 1 if anomaly_score == -1 else 0
-
-            # Adaptive thresholding: Adjust based on reasoning severity
-            if len([r for r in reasoning if "std devs" in r]) >= 2:
-                decision = 1  # Override to flag if multiple severe deviations
-                self.threshold = min(self.threshold * 1.1, 0.01)  # Increase threshold
+            if len([r for r in reasoning if "std devs" in r or "fraud" in r.lower()]) >= 2:
+                decision = 1
+                self.threshold = min(self.threshold * 1.1, 0.01)
             else:
-                self.threshold = max(self.threshold * 0.95, 0.001)  # Decrease threshold
-
+                self.threshold = max(self.threshold * 0.95, 0.001)
             return decision
         except Exception as e:
             logger.error(f"Error in decision: {str(e)}")
@@ -129,8 +158,6 @@ class ReActAgent:
         features = self.observe(transaction)
         if features is None:
             return "Error processing transaction."
-
-        # Get model prediction using DataFrame with feature names
         anomaly_score = self.model.predict(features)[0]
         reasoning = self.reason(features, anomaly_score)
         decision = self.decide(anomaly_score, reasoning)
@@ -139,8 +166,11 @@ class ReActAgent:
 
 
 def main():
+    # Hugging Face token (optional for Qwen 2.5, set to None)
+    hf_token = os.getenv("HF_TOKEN")  # Not required for Qwen 2.5
+
     # Initialize agent
-    agent = ReActAgent()
+    agent = ReActAgent(hf_token=hf_token)
 
     # Load test data for batch processing
     try:
@@ -150,13 +180,13 @@ def main():
         logger.error("Error: 'test.csv' not found in 'data/processed/'. Run preprocess.py first.")
         exit(1)
 
-    # Process a subset of transactions (e.g., first 100 for testing)
-    subset = test_df.head(100)
+    # Process a small subset of transactions (5 for API efficiency)
+    subset = test_df.head(5)
     for idx, transaction in subset.iterrows():
         action = agent.process_transaction(transaction)
         logger.info(f"Transaction {idx}: {action}")
 
-    # Save decision log to file
+    # Save decision log
     try:
         pd.DataFrame(agent.decision_log).to_csv(os.path.join(LOG_DIR, 'decision_log.csv'), index=False)
         logger.info("Decision log saved to logs/decision_log.csv.")
