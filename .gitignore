@@ -20,7 +20,7 @@ pip-delete-this-directory.txt
 htmlcov/
 .tox/
 .cache/
-ruff_cache/
+.ruff_cache/
 .dmypy.json
 
 .vscode/
