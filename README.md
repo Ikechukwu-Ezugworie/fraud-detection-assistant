@@ -1,36 +1,3 @@
 # Fraud Detection Assistant with Agentic AI
 
-## Summary
-This project builds a lightweight fraud detection assistant using the ReAct framework to identify suspicious credit card transactions.
-It leverages the [Kaggle Credit Card Fraud Detection Dataset](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud), 
-employing logic-based reasoning to flag anomalies without manual reconfiguration. 
-
-## Setup
-1. Clone repo: `git clone <repository-url>`
-2. Create virtual environment: `python -m venv venv && source venv/bin/activate`
-3. Install dependencies: `pip install -r requirements.txt`
-4. Download Kaggle dataset from [Kaggle Credit Card Fraud Detection Dataset](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) to `data/raw/creditcard.csv`.
-
-
-## Usage
-1. **Preprocess Data**:
-   - Normalize `Amount` and `Time`, split into train/test sets:
-     ```bash
-     python src/preprocess.py
-     ```
-   - Outputs: `data/processed/train.csv`, `data/processed/test.csv`
-   
-
-2. **Train Baseline Model**:
-   - Train Isolation Forest on normal transactions and evaluate:
-     ```bash
-     python src/model.py
-     ```
-   - Outputs: `models/baseline_model.pkl`, logs precision/recall/F1-score.
-   
-3. **Run ReAct Agent**:
-   - Process transactions, generate reasoning, and log decisions:
-   - ```bash
-     python src/react_agent.py
-     ```
-   - Outputs: `logs/decisions.log` , `logs/decision_log.csv`
+This project presents a fraud detection assistant powered by Agentic AI, designed to autonomously analyze and reason about credit card transactions. Leveraging the ReAct (Reasoning and Acting) framework, the assistant not only detects suspicious activity but also explains its decisions through interpretable reasoning steps. Built on the [Kaggle Credit Card Fraud Detection Dataset](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud), it showcases how Agentic AI systems can combine data-driven insights with dynamic decision-making to improve the accuracy and transparency of fraud detection.
