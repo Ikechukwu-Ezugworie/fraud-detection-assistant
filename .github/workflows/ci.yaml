@@ -1,0 +1,35 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
+jobs:
+  static_analysis_and_linting:
+    name: Linting & Static Code Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          python-version-file: "pyproject.toml"
+
+      - name: Install dev dependencies
+        run: uv sync --locked --only-dev
+
+      - name: Run pre-commit checks
+        run: |
+          uv run pre-commit run --all-files
