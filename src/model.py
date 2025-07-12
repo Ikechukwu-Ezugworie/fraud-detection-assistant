@@ -1,17 +1,18 @@
-import pandas as pd
-import numpy as np
-from sklearn.ensemble import IsolationForest
-from sklearn.metrics import precision_score, recall_score, f1_score, classification_report
-import joblib
-import os
 import logging
+import os
+
+import joblib
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import IsolationForest
+from sklearn.metrics import classification_report, f1_score, precision_score, recall_score
 
 # Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 # Create models directory
-os.makedirs('models', exist_ok=True)
+os.makedirs("models", exist_ok=True)
 
 
 def load_data(train_path, test_path):
@@ -34,8 +35,8 @@ def train_isolation_forest(train_df):
     """Train Isolation Forest on normal transactions."""
     try:
         # Filter normal transactions (Class == 0) for training
-        normal_train = train_df[train_df['Class'] == 0]
-        X_train = normal_train.drop(columns=['Class'])
+        normal_train = train_df[train_df["Class"] == 0]
+        X_train = normal_train.drop(columns=["Class"])
         logger.info(f"Training Isolation Forest on {X_train.shape[0]} normal transactions.")
 
         # Initialize and train Isolation Forest
@@ -43,8 +44,8 @@ def train_isolation_forest(train_df):
             contamination=0.0017,  # Approximate fraud ratio in dataset
             random_state=42,
             n_estimators=100,
-            max_samples='auto',
-            n_jobs=-1  # Use all available cores
+            max_samples="auto",
+            n_jobs=-1,  # Use all available cores
         )
         model.fit(X_train)
         logger.info("Isolation Forest training completed.")
@@ -57,8 +58,8 @@ def train_isolation_forest(train_df):
 def evaluate_model(model, test_df):
     """Evaluate model on test set using precision, recall, and F1-score."""
     try:
-        X_test = test_df.drop(columns=['Class'])
-        y_test = test_df['Class']
+        X_test = test_df.drop(columns=["Class"])
+        y_test = test_df["Class"]
 
         # Predict anomalies (-1 for anomalies, 1 for normal)
         y_pred = model.predict(X_test)
@@ -83,7 +84,7 @@ def evaluate_model(model, test_df):
         exit(1)
 
 
-def save_model(model, path='models/baseline_model.pkl'):
+def save_model(model, path="models/baseline_model.pkl"):
     """Save trained model to disk."""
     try:
         joblib.dump(model, path)
@@ -95,8 +96,8 @@ def save_model(model, path='models/baseline_model.pkl'):
 
 def main():
     # Load preprocessed data
-    train_path = 'data/processed/train.csv'
-    test_path = 'data/processed/test.csv'
+    train_path = "data/processed/train.csv"
+    test_path = "data/processed/test.csv"
     train_df, test_df = load_data(train_path, test_path)
 
     # Train Isolation Forest
@@ -109,7 +110,7 @@ def main():
     save_model(model)
 
     # Verify saved model
-    if os.path.exists('models/baseline_model.pkl'):
+    if os.path.exists("models/baseline_model.pkl"):
         logger.info("Verification: Model successfully saved.")
     else:
         logger.error("Verification failed: Model file not found.")
