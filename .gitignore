@@ -37,6 +37,7 @@ coverage.xml
 
 data/raw/
 data/processed/
+data/history.json
 models/
 logs/
 *.h5

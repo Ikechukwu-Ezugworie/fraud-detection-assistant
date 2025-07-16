@@ -10,7 +10,9 @@ dependencies = [
     "joblib>=1.4.0",
     "streamlit>=1.38.0",
     "huggingface_hub>=0.17.0",
-    "plotly>=5.22.0"
+    "plotly>=5.22.0",
+    "transformers>=4.53.2",
+    "torch>=2.7.1",
 ]
 
 [dependency-groups]
@@ -23,6 +25,7 @@ dev = [
 prep = "src.preprocess:main"
 train = "src.model:main"
 agent = "src.react_agent:main"
+ui = "src.interface:main"
 
 [tool.ruff]
 line-length = 120
