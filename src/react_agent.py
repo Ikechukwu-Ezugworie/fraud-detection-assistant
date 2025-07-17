@@ -55,7 +55,6 @@ class ReActAgent:
 
     def process_transaction(self, transaction: pd.Series):
         history: list[BaseMessage] = []
-        max_iterations = 3
         system_message = (
             "You are a helpful assistant that analyzes financial transactions. Make use of the tools provided."
             "To analyze a transaction, you need to know the anomaly score"

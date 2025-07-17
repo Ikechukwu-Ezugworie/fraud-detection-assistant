@@ -73,12 +73,12 @@ def main():
 
         with col1:
             st.subheader("Transaction Details")
-            amount_input = st.number_input(
+            st.number_input(
                 "Transaction Amount",
                 value=float(getattr(selected_sample, "Amount", 0.0)),
                 disabled=True,
             )
-            time_input = st.number_input(
+            st.number_input(
                 "Time of Day",
                 value=float(getattr(selected_sample, "Time", 0.0)),
                 disabled=True,
