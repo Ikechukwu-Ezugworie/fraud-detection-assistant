@@ -1,98 +1,127 @@
 import logging
+import os
 
 import joblib
 import pandas as pd
+from dotenv import load_dotenv
+from huggingface_hub import InferenceClient
+from langchain_core.tools import tool
 
-# Set up logging
 logger = logging.getLogger(__name__)
 
-# Load the pre-trained Isolation Forest model
+load_dotenv()
+
+model = None
 try:
     model = joblib.load("models/baseline_model.pkl")
     logger.info("Isolation Forest model loaded for tools.")
-except FileNotFoundError:
-    logger.error("Model file 'models/baseline_model.pkl' not found. Make sure to run model.py first.")
-    model = None
 except Exception as e:
-    logger.error(f"Error loading model: {str(e)}")
-    model = None
+    logger.error(f"Failed to load Isolation Forest model: {e}")
 
 
-def get_anomaly_score(transaction: pd.DataFrame) -> str:
-    """
-    Calculates the anomaly score for a given transaction using the pre-trained Isolation Forest model.
-    The model returns -1 for anomalies (potential fraud) and 1 for normal transactions.
-    We convert this to a more descriptive string.
-    """
-    if model is None:
-        return "Error: Anomaly detection model is not available."
-    try:
-        # The model expects a 2D array, so we pass the DataFrame directly
-        score = model.predict(transaction)[0]
-        if score == -1:
-            return "High Anomaly Score (Potential Fraud)"
-        else:
-            return "Normal Score"
-    except Exception as e:
-        logger.error(f"Error getting anomaly score: {str(e)}")
-        return f"Error: Could not calculate anomaly score. Details: {str(e)}"
-
-
-import json
-
-# Load user history data
+hf_token = os.getenv("HF_TOKEN")
+hf_inference_model = os.getenv("HF_INFERENCE_MODEL", "Qwen/Qwen2.5-7B-Instruct")
 try:
-    with open("data/user_transaction_history.json", "r") as f:
-        user_db = json.load(f)
-    logger.info("User transaction history loaded for tools.")
+    client = InferenceClient(
+        model=hf_inference_model,
+        token=hf_token,
+    )
+    logger.info(f"Initialized Inference API client for {hf_inference_model}.")
+except Exception as e:
+    logger.error(f"Failed to initialize Inference API client: {str(e)}.")
+    client = None
+
+
+train_path = "data/processed/train.csv"
+try:
+    train_df = pd.read_csv(train_path)
+    logger.info(f"Loaded training data from {train_path} for historical context.")
+    amount_mean = train_df["Amount"].mean()
+    amount_std = train_df["Amount"].std()
+    time_mean = train_df["Time"].mean()
+    time_std = train_df["Time"].std()
 except FileNotFoundError:
-    logger.error("User history file not found. The 'get_user_history' tool will not work.")
-    user_db = {}
-except json.JSONDecodeError:
-    logger.error("Error decoding user_transaction_history.json. The file might be corrupted.")
-    user_db = {}
+    logger.error(f"Error: Training data {train_path} not found. Run preprocess.py first.")
+    exit(1)
 
-def get_user_history(user_id: str, transaction_amount: float) -> str:
+
+@tool
+def get_anomaly_score(features: dict) -> int:
     """
-    Analyzes the user's transaction history by looking up the user_id in the loaded JSON file.
-    It compares the current transaction amount against the user's historical average and standard deviation.
+    Calculates an anomaly score for a transaction using a pre-trained Isolation Forest model.
+
+    Args:
+        features (dict): A dictionary containing the transaction features,
+                         maintaining the order: 'Time', 'V1', 'V2', ... 'V28', 'Amount'.
+
+    Returns:
+        int: The anomaly score. Returns -1 for an anomaly (potential fraud) and 1 for a normal transaction.
+             Returns 0 if the model is not available or an error occurs.
     """
-    user_id_str = str(user_id)
-    if not user_db or user_id_str not in user_db:
-        return "User has no significant transaction history (New or Unknown User)."
 
-    user_data = user_db[user_id_str]
-    avg_amount = user_data.get("avg_transaction_amount", 0)
-    std_dev = user_data.get("std_dev_amount", 0)
-    profile = user_data.get("profile", "N/A")
+    if model is None:
+        logger.error("Anomaly detection model is not available.")
+        return 0
+    try:
+        # The agent might pass the features nested inside another dictionary.
+        if "features" in features:
+            features = features["features"]
 
-    if avg_amount == 0 and std_dev == 0:
-        return f"User profile '{profile}' has no significant transaction history."
+        ordered_features = {}
+        ordered_features["Time"] = features.get("Time")
+        for i in range(1, 29):
+            ordered_features[f"V{i}"] = features.get(f"V{i}")
+        ordered_features["Amount"] = features.get("Amount")
 
-    if transaction_amount > avg_amount + (3 * std_dev):
-        return f"Transaction amount is significantly higher than the user's average of ${avg_amount:.2f} (Profile: {profile})."
-    elif transaction_amount < avg_amount - (3 * std_dev) and transaction_amount > 0:
-        return f"Transaction amount is significantly lower than the user's average of ${avg_amount:.2f} (Profile: {profile})."
-    else:
-        return f"Transaction amount is consistent with the user's history (Average: ${avg_amount:.2f}, Profile: {profile})."
+        transaction_df = pd.DataFrame([ordered_features])
+        score = model.predict(transaction_df)[0]
+        return int(score)
+    except Exception as e:
+        logger.error(f"Error in get_anomaly_score: {e}")
+        return 0
 
 
-def analyze_contextual_patterns(transaction_time: float, transaction_amount: float) -> str:
+@tool
+def get_decision_with_reasoning(amount: float, time: float, anomaly_score: int) -> str:
     """
-    Analyzes contextual patterns of the transaction, like time of day or amount.
-    (Placeholder) This tool uses simple heuristics to detect common fraud patterns.
+    Generates a natural language explanation for a transaction's fraud risk using a Hugging Face model.
+
+    Args:
+        amount (float): The normalized transaction amount.
+        time (float): The normalized transaction time.
+        anomaly_score (int): The anomaly score from the Isolation Forest model (-1 for anomaly, 1 for normal).
+
+    Returns:
+        str: A concise, human-readable explanation of the fraud risk.
     """
-    # Time is normalized between 0 and 1. Let's assume 0.9-1.0 and 0.0-0.1 are "late night".
-    is_late_night = 0.9 <= transaction_time <= 1.0 or 0.0 <= transaction_time <= 0.1
-    is_round_number = transaction_amount % 100 == 0 and transaction_amount > 0
+    if client:
+        prompt = (
+            f"A credit card transaction has normalized Amount={amount:.2f} "
+            f"(historical mean={amount_mean:.2f}, std={amount_std:.2f}) and "
+            f"Time={time:.2f} (historical mean={time_mean:.2f}, std={time_std:.2f}). "
+            f"The Isolation Forest model predicts: {'anomaly' if anomaly_score == -1 else 'normal'}. "
+            f"Provide a concise reasoning chain (1-2 sentences) to determine if this transaction is likely fraudulent."
+        )
 
-    patterns = []
-    if is_late_night:
-        patterns.append("Transaction occurred at an unusual time (late night).")
-    if is_round_number:
-        patterns.append("Transaction is a large, round number, which can be a fraud indicator.")
+        try:
+            response = (
+                client.chat_completion(
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=200,
+                    temperature=0.5,
+                )
+                .choices[0]
+                .message.content
+            )
+            if not response:
+                raise ValueError("API returned an empty response.")
 
-    if not patterns:
-        return "No suspicious contextual patterns detected."
+            return response
+        except Exception as e:
+            logger.error(f"Error calling HF API: {e}")
+            return f"Error: API call failed. Details: {e}"
 
-    return " ".join(patterns)
+    return "Error: Inference API client not initialized."
+
+
+all_tools = [get_anomaly_score, get_decision_with_reasoning]

@@ -13,6 +13,10 @@ dependencies = [
     "plotly>=5.22.0",
     "transformers>=4.53.2",
     "torch>=2.7.1",
+    "langchain>=0.2.0",
+    "langchain-huggingface>=0.0.3",
+    "python-dotenv>=1.1.1",
+    "langchain-google-genai>=2.1.8",
 ]
 
 [dependency-groups]
