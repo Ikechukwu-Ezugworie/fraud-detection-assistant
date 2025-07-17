@@ -34,6 +34,7 @@ coverage.xml
 
 .env
 .env.*
+!.env.example
 
 data/raw/
 data/processed/
